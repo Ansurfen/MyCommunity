@@ -1,0 +1,2 @@
+# MyCommunity
+A community platform
