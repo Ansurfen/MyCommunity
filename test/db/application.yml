@@ -1,0 +1,8 @@
+logger:
+ level: test
+ format:
+  timestamp: 2006-01-02 15:04:05
+redis:
+ host: localhost
+ port: 6379
+ password: ""

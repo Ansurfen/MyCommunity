@@ -1,0 +1,7 @@
+logger:
+ level: test
+ format:
+  timestamp: 2006-01-02 15:04:05
+cache:
+ size: 12.5
+ uint: MB
