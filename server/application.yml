@@ -1,0 +1,23 @@
+server:
+ port: 9090
+logger:
+ level: test
+ format:
+  timestamp: 2006-01-02 15:04:05
+datasource:
+ driver: mysql
+ host: localhost
+ port: 3306
+ username: root
+ password: root
+ charset: utf8
+ database:
+ - general
+ - test1
+redis:
+ host: localhost
+ port: 6379
+ password: 
+cache:
+ size: 12.5
+ uint: KB
