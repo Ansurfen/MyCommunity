@@ -1,23 +1,23 @@
-./client/my-community/.DS_Store
-./client/my-community/node_modules
-./client/my-community//dist
+**/.DS_Store
+**/node_modules
+**/dist
 
 
 # local env files
-./client/my-community/.env.local
-./client/my-community/.env.*.local
+**/.env.local
+**/.env.*.local
 
 # Log files
-./client/my-community/npm-debug.log*
-./client/my-community/yarn-debug.log*
-./client/my-community/yarn-error.log*
-./client/my-community/pnpm-debug.log*
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
 
 # Editor directories and files
-./client/my-community/.idea
-./client/my-community/.vscode
-./client/my-community/*.suo
-./client/my-community/*.ntvs*
-./client/my-community/*.njsproj
-./client/my-community/*.sln
-./client/my-community/*.sw?
+**/.idea
+**/.vscode
+**/*.suo
+**/*.ntvs*
+**/*.njsproj
+**/*.sln
+**/*.sw?
