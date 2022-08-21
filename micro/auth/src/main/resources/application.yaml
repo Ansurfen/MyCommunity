@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: auth-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+server:
+  port: 8000
+proxy:
+  addr:
+    - http://127.0.0.1:9090
+    - http://127.0.0.1:9091
+  balanced: true
