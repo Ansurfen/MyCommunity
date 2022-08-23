@@ -12,6 +12,7 @@ import { onMounted, ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { LinkItem } from '@/models/search'
+import { SetStoreWithBoolean } from "@/utils/store";
 defineProps({
   msg: {
     type: String,
@@ -54,6 +55,7 @@ const search = (msg: String) => {
     console.log(msg)
     router.push({ name: "community/search", params: { str: msg.toString() } })
   }
+  SetStoreWithBoolean("search", true)
 }
 
 onMounted(() => {

@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HomeNav from "@/components/Home/HomeNav.vue";
-import HomeBody from "@/components/Home/HomeBody.vue";
+import HomeNav from "@/components/home/HomeNav.vue";
+import HomeBody from "@/components/home/HomeBody.vue";
 export default defineComponent({
   name: "HomeView",
   components: {

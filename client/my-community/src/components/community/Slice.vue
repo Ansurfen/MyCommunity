@@ -1,7 +1,7 @@
 <template>
     <div class="slice-container">
         <div v-if="communities.length <= 0">
-            <h1>空空如也</h1>
+            <h1 style="margin-top: 30px;">空空如也</h1>
         </div>
         <div v-else>
             <div v-for="(community, index) in communities" :key="index">

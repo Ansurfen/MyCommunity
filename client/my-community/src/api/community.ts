@@ -11,3 +11,7 @@ export const searchCommunity = (data: FormData) => {
 export const infoCommunity = (data: FormData) => {
     return service.request({ url: '/community/info', method: 'post', data })
 }
+
+export const addCommunity = (data: string, jwt: string) => {
+    return service.request({ url: '/community/add', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
+}

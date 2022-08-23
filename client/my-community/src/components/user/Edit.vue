@@ -109,7 +109,7 @@ import { useConfStore } from '@/stores/conf'
 import { Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { userEdit } from '@/api/user'
-import { SetStore } from '@/utils/store'
+import { SetStoreWithBoolean } from '@/utils/store'
 defineProps({
     fit: {
         default: function () {
@@ -172,10 +172,8 @@ const save = () => {
         school: school.value
     }), userStore.jwt).then((res) => {
         if (res.status === 200) {
-            userStore.info['alias'] = alias.value
-            console.log("修改成功")
+            userStore.syncInfoWithNet()
         }
-        SetStore("edit", "1")
     }).catch((err) => console.log(err))
     exit()
 }

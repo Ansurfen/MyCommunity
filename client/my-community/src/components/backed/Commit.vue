@@ -89,11 +89,12 @@ import { communityInfoCommit } from '@/api/commit'
 import { Flags } from '@/models/constant'
 import { Applications } from '@/models/community'
 import { passCommit, rejectCommit } from '@/api/commit'
+import { GetStoreWithBoolean, SetStoreWithBoolean } from '@/utils/store'
 const activeName = ref('first')
 let ApsMine = ref<Applications[]>([])
 let ApsMineInAll = ref<Applications[]>([])
 const userStore = useUserStore()
-const handleClick = (tab: TabsPaneContext, event: Event) => {
+const handleClick = (tab: Pick<TabsPaneContext, "index">) => {
     if (userStore.login) {
         switch (tab.index) {
             case '0': communityInfoCommit(JSON.stringify({
@@ -141,6 +142,10 @@ const reject = (cname: string, username: string, type: number) => {
     }), userStore.jwt).then(res => {
         console.log(res)
     }).catch(err => console.log(err))
+}
+if (GetStoreWithBoolean("loadCommit")) {
+    handleClick({ "index": '0' })
+    SetStoreWithBoolean("loadCommit", false)
 }
 </script>
 

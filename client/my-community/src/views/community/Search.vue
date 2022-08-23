@@ -2,7 +2,7 @@
     <div class="search-container">
         <el-container>
             <el-header>
-                <home-nav></home-nav>
+                <home-nav />
                 <el-row justify="center">
                     <el-input v-model="input" placeholder="Please input" style="width: 800px;height: 50px;"
                         @submit.native.prevent @keyup.enter="search">
@@ -49,9 +49,10 @@ import { ElNotification } from 'element-plus'
 import { newCommunity, searchCommunity } from '@/api/community'
 import { useUserStore } from '@/stores/user'
 import { Flags } from '@/models/constant'
-import HomeNav from '@/components/Home/HomeNav.vue'
+import HomeNav from '@/components/home/HomeNav.vue'
 import { Search } from '@element-plus/icons-vue'
 import { Community } from '@/models/community'
+import { GetStoreWithBoolean, SetStoreWithBoolean } from '@/utils/store'
 
 const router = useRoute()
 const userStore = useUserStore()
@@ -93,6 +94,11 @@ const search = () => {
     searchCommunity(form).then(res => {
         communities.value = JSON.parse(res['data']['data'].data)
     }).catch(err => console.log(err))
+}
+
+if (GetStoreWithBoolean("search")) {
+    search()
+    SetStoreWithBoolean("search", false)
 }
 </script>
 

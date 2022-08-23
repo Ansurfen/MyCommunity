@@ -1,7 +1,7 @@
 export enum Flags {
     // user
     ROOT,
-    Admin,
+    ADMIN,
     None,
     // community
     ACTIVE,
@@ -18,6 +18,7 @@ export enum Flags {
     //commit
     PASS,
     CHANGE,
+    USERINFO,
 
     ERR
 }

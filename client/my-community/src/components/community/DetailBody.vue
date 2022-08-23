@@ -13,7 +13,7 @@
                     </el-col>
                     <el-col :span="8">
                         <!-- 已关注要变黑啥的 -->
-                        <el-button type="success">申请加入</el-button>
+                        <el-button type="success" @click="add">申请加入</el-button>
                         <!-- 已发送申请 -->
                         <!-- 已加入 -->
                     </el-col>
@@ -76,12 +76,14 @@
 import DetailCard from '@/components/community/DetailCard.vue'
 import Tip from '@/components/community/Tip.vue'
 import { Community, Post } from '@/models/community'
-import { ElInput } from 'element-plus'
+import { ElInput, ElNotification } from 'element-plus'
 import { addPost } from '@/api/post'
 import { nextTick, PropType, reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import { infoPost } from '@/api/post'
+import { addCommunity } from '@/api/community'
+import { Flags } from '@/models/constant'
 const errorHandler = true
 const dialogFormVisible = ref(false)
 const form = reactive({
@@ -96,8 +98,18 @@ const post = (id: string) => {
         context: form.context,
         tags: JSON.stringify(dynamicTags.value)
     }), userStore.jwt).then(res => {
-        console.log(res)
-    }).catch(err => console.log(err))
+        ElNotification({
+            title: 'Success',
+            message: '发帖成功',
+            type: 'success'
+        })
+    }).catch(err => {
+        ElNotification({
+            title: 'Error',
+            message: err,
+            type: 'error'
+        })
+    })
     dialogFormVisible.value = false
 }
 // 得把参数传进来
@@ -143,6 +155,16 @@ const handleInputConfirm = () => {
     }
     inputVisible.value = false
     inputValue.value = ''
+}
+
+const add = () => {
+    addCommunity(JSON.stringify({
+        first: userStore.info['username'],
+        second: route.params['name'],
+        type: Flags.ADD
+    }), userStore.jwt).then(res => {
+
+    }).catch(err => console.log(err))
 }
 </script>
 

@@ -19,3 +19,11 @@ export const GetStore = (k: string): string => {
     }
     return ""
 }
+
+export const SetStoreWithBoolean = (k: string, v: boolean) => {
+    v ? SetStore(k, "1") : SetStore(k, "")
+}
+
+export const GetStoreWithBoolean = (k: string): boolean => {
+    return GetStore(k).length > 0 ? true : false
+}

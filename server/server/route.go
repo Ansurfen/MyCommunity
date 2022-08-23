@@ -20,6 +20,7 @@ func (s *SEngine) UseRouter() *SEngine {
 		userRouter.POST("/edit/pwd", user.EditPwd)
 		userRouter.POST("/find", user.Find)
 		userRouter.DELETE("/del", user.Cancel)
+		// 不需要验证了
 		userRouter.GET("/info", middlewares.AuthJWT(), user.Info)
 		userRouter.POST("/image/update", middlewares.AuthJWT(), user.Update)
 	}
@@ -29,11 +30,12 @@ func (s *SEngine) UseRouter() *SEngine {
 		communityRouter.POST("/new", middlewares.AuthJWT(), community.New)
 		communityRouter.POST("/info", community.Info)
 		communityRouter.POST("/add", middlewares.AuthJWT(), community.Add)
-		communityRouter.POST("/edit", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.Admin), community.Edit)
+		communityRouter.POST("/edit", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ADMIN), community.Edit)
 		communityRouter.POST("/del", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ROOT), community.Del)
 		communityRouter.POST("/search", community.Search)
 		communityRouter.POST("/cancel", middlewares.AuthJWT(), middlewares.CheckCommunityMember(), community.Cancel)
 		communityRouter.POST("/post/add", middlewares.AuthJWT(), middlewares.CheckCommunityMember(), community.AddPost)
+		// 必须拦截非社团的人看帖子
 		communityRouter.POST("/post/info", community.InfoPost)
 	}
 
@@ -51,17 +53,17 @@ func (s *SEngine) UseRouter() *SEngine {
 	commitRouter := s.Group("/commit", middlewares.AuthJWT())
 	{
 		commitRouter.POST("/info", commit.CommunityInfo)
-		commitRouter.POST("/info/user", commit.UserInfo)
-		commitRouter.POST("/pass", middlewares.CheckRight(models.Admin), commit.Pass)
-		commitRouter.POST("/reject", middlewares.CheckRight(models.Admin), commit.Reject)
-		commitRouter.POST("/change", middlewares.CheckRight(models.ROOT), commit.ChangeRight)
+		commitRouter.POST("/info/user", middlewares.AuthRight(models.ROOT), commit.UserInfo)
+		commitRouter.POST("/pass", middlewares.AuthRight(models.ADMIN), commit.Pass)
+		commitRouter.POST("/reject", middlewares.AuthRight(models.ADMIN), commit.Reject)
+		commitRouter.POST("/change", middlewares.AuthRight(models.ROOT), commit.ChangeRight)
 	}
 
 	// 后台
-	s.GET("/admin/info", middlewares.CheckRight(models.ROOT), admin.Info)
-	s.POST("/admin/add", middlewares.CheckRight(models.ROOT), admin.Add)
-	s.POST("/admin/del", middlewares.CheckRight(models.ROOT), admin.Del)
-	s.POST("/admin/find", middlewares.CheckRight(models.ROOT), admin.Find)
+	s.GET("/admin/info", middlewares.AuthRight(models.ROOT), admin.Info)
+	s.POST("/admin/add", middlewares.AuthRight(models.ROOT), admin.Add)
+	s.POST("/admin/del", middlewares.AuthRight(models.ROOT), admin.Del)
+	s.POST("/admin/find", middlewares.AuthRight(models.ROOT), admin.Find)
 
 	return s
 }

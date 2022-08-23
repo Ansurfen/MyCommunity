@@ -59,7 +59,7 @@ const submit = async (formEl: FormInstance | undefined) => {
           }
           router.replace({ name: "home" })
         })
-        .catch((err) => console.log(err.response.data)) //登录成功必须去更新用户信息
+        .catch((err) => alert("账号密码错误或用户不存在")) //登录成功必须去更新用户信息
     } else {
       console.log("error submit!", fields);
     }

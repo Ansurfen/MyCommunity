@@ -57,18 +57,14 @@ import { useRouter } from 'vue-router'
 import User from '@/components/backed/User.vue'
 import Commit from '@/components/backed/Commit.vue'
 import { ref } from '@vue/reactivity'
-// defineProps({
-//     vipage: {
-//         default: function () {
-//             return '1'
-//         },
-//         type: String
-//     }
-// })
+import { SetStoreWithBoolean } from '@/utils/store'
 let ipage = ref('1')
 const router = useRouter()
 const selectMenu = (index: string) => {
     ipage.value = index
+    if (ipage.value === '2') {
+        SetStoreWithBoolean("loadCommit", true)
+    }
 }
 const home = () => {
     router.push({ name: "home" })

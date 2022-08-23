@@ -77,7 +77,7 @@
 <script lang="ts" setup>
 import { useConfStore } from '@/stores/conf'
 import { useUserStore } from '@/stores/user'
-import { GetStore, SetStore } from '@/utils/store';
+import { GetStore, SetStoreWithBoolean } from '@/utils/store';
 import { toRefs } from '@vueuse/core'
 import { reactive } from 'vue'
 const userStore = useUserStore()
@@ -90,7 +90,7 @@ if (window.localStorage) {
     }
     if (userStore.login && GetStore("edit").length > 0) {
         userStore.syncInfoWithNet()
-        SetStore("edit", "")
+        SetStoreWithBoolean("edit", false)
     }
     if (userStore.login && userStore.info.username === '') {
         userStore.syncInfoWithCache()
@@ -100,6 +100,7 @@ if (window.localStorage) {
 const edit = () => {
     useConfStore().edit = true
 }
+
 const state = reactive({
     fit: 'fill',
     url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',

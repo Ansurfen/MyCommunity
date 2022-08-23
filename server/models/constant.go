@@ -3,7 +3,7 @@ package models
 const (
 	// user
 	ROOT = iota
-	Admin
+	ADMIN
 	None
 	// community
 	ACTIVE
@@ -20,6 +20,7 @@ const (
 	//commit
 	PASS
 	CHANGE
+	USERINFO
 
 	//
 	ERR

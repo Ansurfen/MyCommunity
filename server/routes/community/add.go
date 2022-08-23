@@ -12,7 +12,7 @@ import (
 )
 
 /*
-	first -> from 
+	first -> from
 	second -> to
 	type -> add
 */

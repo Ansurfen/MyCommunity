@@ -40,11 +40,11 @@ func CommunityInfo(ctx *gin.Context) {
 		db.Where(sql, data.Status, user.Username).Find(&aps)
 	case models.ALL:
 		//得列举出所有情况呃
-		if user.Right == models.ROOT || user.Right == models.Admin {
-			sql = "type > 6 and type < 11"
+		if user.Right == models.ROOT || user.Right == models.ADMIN {
+			sql = "type > " + utils.ToString(models.END) + " and type < " + utils.ToString(models.ALL)
 			db.Where(sql).Find(&aps)
 		} else {
-			sql = "type > 6 and type < 11 and second = ?"
+			sql = "type > " + utils.ToString(models.END) + " and type < " + utils.ToString(models.ALL) + " and second = ?"
 			db.Where(sql, user.Username).Find(&aps)
 		}
 	}
@@ -58,23 +58,14 @@ func CommunityInfo(ctx *gin.Context) {
 
 func UserInfo(ctx *gin.Context) {
 	var data models.Applications
-	if err := ctx.ShouldBindJSON(&data); err != nil {
-		common.CommonRes(ctx, http.StatusBadRequest, gin.H{"err": err.Error()}, "Fail to parser JSON")
+	if tmpl, b := ctx.Get("application"); !b {
+		common.CommonRes(ctx, http.StatusUnprocessableEntity, nil, "申请不存在")
 		return
+	} else {
+		data = tmpl.(models.Applications)
 	}
 	if data.Type != models.INFO {
 		common.FailRes(ctx, nil, "状态码校验失败")
-		return
-	}
-	var user models.User
-	if tmpl, b := ctx.Get("user"); !b {
-		common.CommonRes(ctx, http.StatusUnprocessableEntity, nil, "User don't exist")
-		return
-	} else {
-		user = tmpl.(models.User)
-	}
-	if user.Right != models.ROOT {
-		common.CommonRes(ctx, http.StatusUnprocessableEntity, nil, "没有权限")
 		return
 	}
 	var users []models.User
