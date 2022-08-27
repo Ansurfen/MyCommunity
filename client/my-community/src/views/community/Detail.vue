@@ -2,7 +2,7 @@
     <div class="detail-container">
         <el-container>
             <el-header>
-                <home-nav />
+                <home-nav style="background-color: #1d3557;"/>
                 <h1>{{ post.title }}</h1>
                 <div v-if="post.context.length >= 100 && !showContext">
                     <el-button text @click="showContext = true">{{ post.context.slice(0, 100) + ' 显示全部' }}
@@ -83,7 +83,7 @@
                                             <el-timeline>
                                                 <el-timeline-item v-for="(_k, _i) in k.sub" :key="_i"
                                                     :tiemstamp="_k.timestamp">
-                                                    <div style="text-align: left;">{{ _k.timestamp }}</div>
+                                                    <div style="text-align: left;">{{ FormatTime(_k.timestamp) }}</div>
                                                     <el-row>
                                                         <div v-if="_k.to === ''">
                                                             {{ _k.from }} : {{ _k.context }}
@@ -111,7 +111,7 @@
                                 </div>
                                 <el-row>
                                     <div class="time">
-                                        发布时间: {{ k.timestamp }}
+                                        发布时间: {{ FormatTime(k.timestamp) }}
                                     </div>
                                     <el-popover placement="bottom" :width="400" trigger="click">
                                         <template #reference>
@@ -127,9 +127,10 @@
                         </el-row>
                     </el-card>
                 </div>
-                <el-pagination style="margin-top: 30px;" background v-model:currentPage="currentPage" v-model:page-size="pageSize" :small="small"
-                    :disabled="disabled" :background="background" layout="prev, pager, next, jumper"
-                    :total="comments.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+                <el-pagination style="margin-top: 30px;" background v-model:currentPage="currentPage"
+                    v-model:page-size="pageSize" :small="small" :disabled="disabled" :background="background"
+                    layout="prev, pager, next, jumper" :total="comments.length" @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange" />
             </el-main>
             <el-footer>Copyright By Ansurfen</el-footer>
         </el-container>
@@ -147,6 +148,7 @@ import { useUserStore } from '@/stores/user'
 import HomeNav from '@/components/home/HomeNav.vue'
 import { Delete } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
+import { FormatTime } from '@/utils/time'
 
 const route = useRoute()
 const userStore = useUserStore()
@@ -262,6 +264,9 @@ const del = (level: number, time: string) => {
 </script>
 
 <style scoped>
+.el-header {
+    --el-header-padding: 0 0px;
+}
 .box-card {
     width: 800px;
 }

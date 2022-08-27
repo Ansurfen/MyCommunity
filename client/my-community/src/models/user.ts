@@ -11,4 +11,5 @@ export interface UserInfo {
     school: string
     right: number
     id: number
+    profile: string
 }

@@ -14,7 +14,8 @@ export const useUserStore = defineStore("user", {
       "telephone": '',
       "email": '',
       "id": '',
-      "right": ''
+      "right": '',
+      "profile": '0'
     }
   }),
   actions: {
@@ -35,7 +36,8 @@ export const useUserStore = defineStore("user", {
           "email": tres['email'] === "" ? "未绑定邮箱" : tres['email'],
           "school": tres['school'] === "" ? "未知" : tres['school'],
           "id": tres['id'].toString(),
-          "right": right
+          "right": right,
+          "profile": tres['profile'].toString()
         }
         SetStore('jwt', this.jwt)
         SetStore('info', JSON.stringify(this.info))
@@ -58,7 +60,8 @@ export const useUserStore = defineStore("user", {
         "email": userInfo.email === "" ? "未绑定邮箱" : userInfo.email,
         "school": userInfo.school === "" ? "未知" : userInfo.school,
         "id": userInfo.id.toString(),
-        "right": right
+        "right": right,
+        "profile": userInfo.profile,
       }
     }
   },

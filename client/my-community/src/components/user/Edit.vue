@@ -2,10 +2,10 @@
     <div class="user-edit">
         <el-row>
             <el-col :span="6">
-                <el-avatar style="margin-top: 50px;" shape="square" :size="100" :fit="fit" :src="url" />
+                <el-avatar style="margin-top: 50px;" shape="square" :size="100" :fit="state.fit" :src="state.url" />
             </el-col>
             <el-col :span="6" :offset="6" style="margin-top: 30px;">
-                <el-upload ref="uploadRef" action="http://localhost:9090/image/update"
+                <el-upload ref="uploadRef" action="http://localhost:9090/user/image/update" :headers="head"
                     accept="image/png,image/jpg,image/jpeg" class="upload-demo" list-type="picture-card"
                     :auto-upload="false" multiple :before-upload="handler" :on-preview="handlePreview"
                     :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1" :on-exceed="handleExceed">
@@ -102,30 +102,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { UploadProps, UploadInstance } from 'element-plus'
 import { useConfStore } from '@/stores/conf'
 import { Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { userEdit } from '@/api/user'
-import { SetStoreWithBoolean } from '@/utils/store'
-defineProps({
-    fit: {
-        default: function () {
-            return 'fill'
-        },
-        type: String
-    },
-    url: {
-        default: function () {
-            return 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
-        },
-        type: String
-    }
+
+const state = reactive({
+    fit: 'fill',
+    url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
 const userStore = useUserStore()
-
+if (userStore.info.profile === '1') {
+    state.url = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+}
+const head = new Headers()
+head.append('Authorization', "Bearer " + userStore.jwt)
 const uploadRef = ref<UploadInstance>()
 const telephone = ref(userStore.info['telephone'])
 const school = ref(userStore.info['school'])

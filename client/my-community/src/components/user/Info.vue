@@ -81,6 +81,7 @@ import { GetStore, SetStoreWithBoolean } from '@/utils/store';
 import { toRefs } from '@vueuse/core'
 import { reactive } from 'vue'
 const userStore = useUserStore()
+
 if (window.localStorage) {
     let storage = window.localStorage
     let jwt = storage.getItem('jwt')
@@ -105,6 +106,9 @@ const state = reactive({
     fit: 'fill',
     url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
+if (userStore.info.profile === '1') {
+    state.url = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+}
 const { fit, url } = toRefs(state)
 </script>
 

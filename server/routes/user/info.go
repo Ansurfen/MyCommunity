@@ -20,5 +20,6 @@ func Info(ctx *gin.Context) {
 		"school":    user.School,
 		"right":     user.Right,
 		"id":        user.Id,
+		"profile":   user.Profile,
 	}, "信息获取成功")
 }

@@ -16,7 +16,7 @@ import (
 	second -> to
 	type -> add
 */
-// 申请加入社团
+// 申请加入社团 ， 已经在社团里面不用提交
 func Add(ctx *gin.Context) {
 	var data models.Applications
 	if err := ctx.ShouldBindJSON(&data); err != nil {

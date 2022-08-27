@@ -2,7 +2,7 @@
     <div class="main-container">
         <el-container class="elc">
             <el-header class="bc">
-                <home-nav />
+                <home-nav style="background-color: #1d3557;" />
             </el-header>
             <el-main class="bc">
                 <detail-body :community="community" />
@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import HomeNav from "@/components/home/HomeNav.vue";
-import DetailBody from "@/components/community/DetailBody.vue"
+import DetailBody from "@/components/community/MainBody.vue"
 import { useRoute } from "vue-router"
 import { Community } from "@/models/community"
 import { infoCommunity } from '@/api/community'
@@ -32,7 +32,8 @@ if (name.length > 0) {
 </script>
 
 <style scoped>
-/* .bc {
-    background-color: rgb(51, 56, 77);
-} */
+.el-header {
+    --el-header-padding: 0 0px;
+    flex: 1;
+}
 </style>

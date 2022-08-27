@@ -3,19 +3,20 @@
     <el-row :gutter="20">
       <el-col :span="8" class="left-nav">
         <el-row class="sub-left-nav">
-          <img src="../../assets/logo.png" width="100" height="100" />
-          <el-button class="font-color logo-text" type="text" @click="home">社团云平台</el-button>
+          <img src="../../assets/logo.png" width="90" height="90" />
+          <el-button class="font-color logo-text" type="text"
+            style="margin-left: 20px;padding-top: 45px;font-size: 20px;" @click="home">社团云平台</el-button>
         </el-row>
       </el-col>
       <el-col :span="8"></el-col>
       <el-col :span="8" class="right-nav">
-        <el-row class="sub-right-nav">
+        <el-row class="sub-right-nav" style="margin-bottom: 10px;">
           <search-nav class="search-nav" :msg="msg" />
           <div v-if="userStore.login">
             <el-dropdown>
               <span class="el-dropdown-link">
                 <div class="block">
-                  <el-avatar :size="50" :src="circleUrl" />
+                  <el-avatar :size="45" :src="circleUrl" />
                 </div>
               </span>
               <template #dropdown>
@@ -28,10 +29,11 @@
             </el-dropdown>
           </div>
           <div v-else>
-            <el-button class="font-color" type="text" @click="login">Login</el-button>
-            <el-button class="font-color" type="text" @click="register">Register</el-button>
+            <el-button class="font-color" style="margin-top: 6px;" type="text" @click="login">登录</el-button>
+            <el-button class="font-color" style="margin-top: 6px;" type="text" @click="register">注册</el-button>
           </div>
-          <el-button class="font-color" type="text" @click="about">About</el-button>
+          <el-button style="margin-left: 15px;margin-top: 6px;" class="font-color" type="text" @click="about">关于我们
+          </el-button>
         </el-row>
       </el-col>
     </el-row>
@@ -49,6 +51,9 @@ const state = reactive({
     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
 })
 const userStore = useUserStore()
+if (userStore.info.profile === '1') {
+  state.circleUrl = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+}
 if (window.localStorage) {
   let storage = window.localStorage
   let jwt = storage.getItem('jwt')
@@ -89,14 +94,12 @@ const exit = () => {
 </script>
 
 <style scoped>
-.home-nav {}
-
 .sub-left-nav {
   margin-left: 70px;
 }
 
 .font-color {
-  color: rgb(118, 220, 240);
+  color: whitesmoke
 }
 
 .logo-text {

@@ -1,5 +1,7 @@
 <template>
-    <div class="home-bottom"></div>
+    <div class="home-bottom">
+        Copyright By Ansurfen
+    </div>
 </template>
 
 <style scoped>

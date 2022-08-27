@@ -65,5 +65,7 @@ func (s *SEngine) UseRouter() *SEngine {
 	s.POST("/admin/del", middlewares.AuthRight(models.ROOT), admin.Del)
 	s.POST("/admin/find", middlewares.AuthRight(models.ROOT), admin.Find)
 
+	s.Static("/images", "./images")
+
 	return s
 }

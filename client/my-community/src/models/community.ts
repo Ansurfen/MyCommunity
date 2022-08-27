@@ -13,6 +13,21 @@ export interface Community {
     status: number
 }
 
+export interface FCommunity {
+    id: string,
+    name: string,
+    context: string,
+    tags: string[],
+    image: string,
+    timestamp: string,
+    hostname: string,
+    admins: string,
+    members: string,
+    notes: string,
+    posts: string,
+    status: number
+}
+
 export interface Applications {
     first: string,
     second: string,

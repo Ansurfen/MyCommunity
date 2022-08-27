@@ -20,6 +20,7 @@ func Info(ctx *gin.Context) {
 		common.CommonRes(ctx, http.StatusUnprocessableEntity, nil, "系统错误")
 		return
 	}
+	// 需要判断是否在社团里面了，是就不允许提交
 	common.SuccessRes(ctx, gin.H{"data": string(res)}, "获取数据成功")
 }
 

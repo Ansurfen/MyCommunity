@@ -40,6 +40,7 @@ func Pass(ctx *gin.Context) {
 		community.Name = aps.First
 		community.Hostname = aps.Second
 		community.Context = aps.Context
+		community.Tags = aps.Third
 		community.Timestamp = utils.NowTimestampByString()
 		community.Status = models.ACTIVE
 		db.Insert(&community)

@@ -14,7 +14,7 @@ type User struct {
 	Id          int64  `json:"id" gorm:"primary_key;not null"`
 	Right       int8   `json:"right" gorm:"not null"`
 	Communities string `json:"communities" gorm:"not null"`
-	Image       string `json:"image" gorm:"not null"`
+	Profile     int8   `json:"profile" gorm:"not null"`
 }
 
 func NewUserWithPhone(username, telephone, password string) *User {

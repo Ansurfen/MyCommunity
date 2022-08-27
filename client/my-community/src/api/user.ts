@@ -16,6 +16,6 @@ export const userEdit = (data: string, jwt: string) => {
     return service.request({ url: '/user/edit/info', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
 }
 
-export const imageUpdate = (data: FormData) => {
-    return service.request({ url: '/user/image/update', method: 'post', data, headers: { 'Content-Type': 'multipart/form-data' } })
+export const imageUpdate = (data: FormData, jwt: string) => {
+    return service.request({ url: '/user/image/update', method: 'post', data, headers: { 'Content-Type': 'multipart/form-data', 'Authorization': "Bearer " + jwt } })
 }

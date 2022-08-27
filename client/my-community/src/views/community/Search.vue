@@ -1,8 +1,10 @@
 <template>
-    <div class="search-container">
+    <div class="search-container" style="flex: 1;">
         <el-container>
-            <el-header>
-                <home-nav />
+            <el-header style="flex: 1;">
+                <home-nav style="background-color: #1d3557;" />
+            </el-header>
+            <el-main style="min-height: 900px;">
                 <el-row justify="center">
                     <el-input v-model="input" placeholder="Please input" style="width: 800px;height: 50px;"
                         @submit.native.prevent @keyup.enter="search">
@@ -22,6 +24,18 @@
                                     </el-form-item>
                                 </el-form>
                                 <template #footer>
+                                    <div style="float: left;">
+                                        <el-tag v-for="tag in dynamicTags" :key="tag" class="mx-1" closable
+                                            :disable-transitions="false" @close="handleClose(tag)">
+                                            {{ tag }}
+                                        </el-tag>
+                                        <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue"
+                                            class="ml-1 w-20" size="small" @keyup.enter="handleInputConfirm"
+                                            @blur="handleInputConfirm" />
+                                        <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
+                                            + New Tag
+                                        </el-button>
+                                    </div>
                                     <span class="dialog-footer">
                                         <el-button @click="dialogFormVisible = false" style="margin-right: 30px;">返回
                                         </el-button>
@@ -32,8 +46,6 @@
                         </template>
                     </el-input>
                 </el-row>
-            </el-header>
-            <el-main style="margin-top: 50px;">
                 <slice :communities="communities" />
             </el-main>
             <el-footer>Copyright By Ansurfen</el-footer>
@@ -44,8 +56,8 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import Slice from '@/components/community/Slice.vue'
-import { reactive, ref } from 'vue'
-import { ElNotification } from 'element-plus'
+import { nextTick, reactive, ref } from 'vue'
+import { ElInput, ElNotification } from 'element-plus'
 import { newCommunity, searchCommunity } from '@/api/community'
 import { useUserStore } from '@/stores/user'
 import { Flags } from '@/models/constant'
@@ -54,11 +66,34 @@ import { Search } from '@element-plus/icons-vue'
 import { Community } from '@/models/community'
 import { GetStoreWithBoolean, SetStoreWithBoolean } from '@/utils/store'
 
+const inputValue = ref('')
+const dynamicTags = ref<string[]>([])
+const inputVisible = ref(false)
+const InputRef = ref<InstanceType<typeof ElInput>>()
 const router = useRoute()
 const userStore = useUserStore()
 const dialogFormVisible = ref(false)
 const input = ref(router.params['str'].toString())
 let communities = ref<Community[]>([])
+
+const handleClose = (tag: string) => {
+    dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+}
+
+const handleInputConfirm = () => {
+    if (inputValue.value) {
+        dynamicTags.value.push(inputValue.value)
+    }
+    inputVisible.value = false
+    inputValue.value = ''
+}
+
+const showInput = () => {
+    inputVisible.value = true
+    nextTick(() => {
+        InputRef.value!.input!.focus()
+    })
+}
 
 const form = reactive({
     name: '',
@@ -72,7 +107,8 @@ const commit = () => {
         type: Flags.NEW,
         first: form.name,
         second: userStore.info['username'],
-        context: form.context
+        third: JSON.stringify(dynamicTags.value),
+        context: form.context,
     }), userStore.jwt).then((res) => {
         ElNotification({
             title: 'Success',
@@ -102,8 +138,28 @@ if (GetStoreWithBoolean("search")) {
 }
 </script>
 
-<style scoped>
-.search-container {
-    margin-top: 80px;
+<style lang="less" scoped>
+.el-header {
+    --el-header-padding: 0 0px;
+}
+
+.el-main {
+    background-image: url("../../assets/search-bg.png");
+}
+
+// /deep/.el-input {
+//     --darkreader-bg--el-input-bg-color: rgba(255, 255, 255, 0.72);
+// }
+
+/deep/.el-input-group__prepend {
+    background-color: rgba(255, 255, 255, 0.72);
+}
+
+/deep/.el-input-group__append {
+    background-color: rgba(255, 255, 255, 0.72);
+}
+
+/deep/.el-dialog {
+    background-color: rgba(255, 255, 255, 0.9);
 }
 </style>

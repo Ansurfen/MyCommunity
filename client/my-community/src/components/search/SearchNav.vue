@@ -63,5 +63,27 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+/deep/.el-input {
+  // 输入框高度
+  height: 40px;
+  // 边框圆角
+  border-radius: 8px;
+  --darkreader-bg--el-input-border-color: #1d3557;
+  --darkreader-bg--el-input-bg-color: #1d3557;
+}
+
+/deep/.el-input__inner {
+  height: 40px;
+  // 设置字号
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  // 设置输入字体的颜色
+  color: grey;
+}
+
+// /deep/.el-autocomplete__popper {
+//   background-color: rgba(255, 255, 255, 0.9);
+// }
 </style>

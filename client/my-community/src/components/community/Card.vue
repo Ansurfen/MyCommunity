@@ -4,16 +4,40 @@
             <template #template>
             </template>
             <template #default>
-                <el-card class="card" @click="main(community)">
-                    <el-row :gutter="20">
-                        <el-col :span="4">
-                            <el-avatar shape="square" :size="80" :fit="fit" :src="url" />
-                        </el-col>
-                        <el-col :span="16">
-                            <div style="text-align: left;">{{ community?.name }}</div>
-                            <div style="text-align: left;">{{ community?.context }}</div>
-                        </el-col>
-                    </el-row>
+                <el-card class="card">
+                    <el-col>
+                        <el-row>
+                            <el-col :span="5">
+                                <el-skeleton-item v-if="community?.image === ''" variant="image"
+                                    style="width: 80px; height: 50px;" />
+                                <el-avatar v-else shape="square" :size="80" :fit="fit" :src="url" />
+                            </el-col>
+                            <el-col :span="10">
+                                <div style="text-align: left;">{{ community?.name }}</div>
+                                <div style="text-align: left;">创始人: {{ community?.hostname }}</div>
+                            </el-col>
+                            <el-col :span="8">
+                                <span style="border-radius: 30px;color: #4e8e2f;">
+                                    <div>
+                                        创建时间: {{ FormatTime(community?.timestamp as string) }}
+                                    </div>
+                                </span>
+                            </el-col>
+                        </el-row>
+                        <el-row style="color: grey;height: 100px;">
+                            {{ community?.context }}
+                        </el-row>
+                        <el-row>
+                            <el-col :span="19">
+                                <div v-for="(k, v) in community?.tags" :key="v">
+                                    {{ k }}
+                                </div>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-button type="primary" @click="main(community)">查看详情</el-button>
+                            </el-col>
+                        </el-row>
+                    </el-col>
                 </el-card>
             </template>
         </el-skeleton>
@@ -21,9 +45,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, reactive, toRefs } from 'vue';
+import { PropType, reactive, ref, toRefs } from 'vue';
 import { Community } from '@/models/community'
 import { useRouter } from 'vue-router';
+import { FormatTime } from '@/utils/time'
+import { emit } from 'process';
 defineProps({
     community: Object as PropType<Community>,
     loading: {
@@ -47,7 +73,11 @@ const { fit, url } = toRefs(state)
 
 <style scoped>
 .card {
-    height: 150px;
-    width: 600px;
+    height: 220px;
+    width: 660px;
+    z-index: 1;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.72);
 }
 </style>

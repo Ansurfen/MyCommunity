@@ -5,9 +5,11 @@
                 <el-row class="tac">
                     <el-menu default-active="1" style="width: 100%;" class="el-menu-vertical-demo" @select="selectMenu">
                         <el-menu-itme index="0">
-                            <img src="../../assets/logo.png" width="90" height="90"
-                                style="background-color: #2d3133;" />
-                            <span style="background-color: #2d3133;" @click="home">社团云平台</span>
+                            <el-row>
+                                <img src="../../assets/logo.png" width="90" height="90"
+                                    style="background-color: #2d3133;" />
+                                <span style="background-color: #2d3133;margin-top: 35px;" @click="home">社团云平台</span>
+                            </el-row>
                         </el-menu-itme>
                         <el-menu-item style="background-color:#2d3133" index="1">
                             <el-icon>
