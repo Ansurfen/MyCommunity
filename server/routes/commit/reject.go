@@ -5,7 +5,6 @@ import (
 	"MyCommunity/db/sql"
 	"MyCommunity/models"
 	"MyCommunity/utils"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -28,8 +27,7 @@ func Reject(ctx *gin.Context) {
 	switch data.Status {
 	case models.NEW: // 审批新建的社团
 		var aps models.Applications
-		via := utils.MD5(data.First + data.Second + strconv.Itoa(int(models.ADD)))
-		fmt.Println(via, data.First, data.Second, models.ADD)
+		via := utils.MD5(data.First + data.Second + strconv.Itoa(int(models.NEW)))
 		db.Where("via = ?", via).First(&aps)
 		if aps.Via == "" {
 			common.FailRes(ctx, nil, "错误许可")

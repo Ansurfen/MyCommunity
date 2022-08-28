@@ -41,7 +41,6 @@ export const useUserStore = defineStore("user", {
         }
         SetStore('jwt', this.jwt)
         SetStore('info', JSON.stringify(this.info))
-
       }).catch((err) => console.log(err))
     },
     syncInfoWithCache() {

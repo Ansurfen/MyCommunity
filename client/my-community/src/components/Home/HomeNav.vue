@@ -45,25 +45,29 @@ import { useUserStore } from "@/stores/user"
 import { useRouter } from "vue-router"
 import SearchNav from "../search/SearchNav.vue"
 import { reactive, toRefs } from 'vue'
+import { GetStore, SetStoreWithBoolean } from "@/utils/store"
 
 const state = reactive({
   circleUrl:
     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
 })
 const userStore = useUserStore()
-if (userStore.info.profile === '1') {
-  state.circleUrl = 'http://localhost:9090/images/' + userStore.info.username + '.png'
-}
-if (window.localStorage) {
-  let storage = window.localStorage
-  let jwt = storage.getItem('jwt')
+if (userStore) {
+  let jwt = GetStore("jwt")
   if (typeof (jwt) === 'string' && jwt.length > 0) {
     userStore.login = true
     userStore.jwt = jwt
   }
-  if (userStore.login) {
+  if (userStore.login && GetStore("edit").length > 0) {
     userStore.syncInfoWithNet()
+    SetStoreWithBoolean("edit", false)
   }
+  if (userStore.login && userStore.info.username === '') {
+    userStore.syncInfoWithCache()
+  }
+}
+if (userStore.info.profile === '1') {
+  state.circleUrl = 'http://localhost:9090/images/' + userStore.info.username + '.png'
 }
 const { circleUrl } = toRefs(state)
 let msg = ''
@@ -90,6 +94,7 @@ const exit = () => {
   userStore.login = false
   userStore.jwt = ""
   window.localStorage.removeItem('jwt')
+  location.reload()
 }
 </script>
 

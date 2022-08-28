@@ -1,53 +1,42 @@
 <template>
     <div class="detail-container">
         <el-container>
-            <el-header>
-                <home-nav style="background-color: #1d3557;"/>
-                <h1>{{ post.title }}</h1>
-                <div v-if="post.context.length >= 100 && !showContext">
-                    <el-button text @click="showContext = true">{{ post.context.slice(0, 100) + ' 显示全部' }}
-                    </el-button>
-                </div>
-                <div v-if="!showContext" class="context">
-                    {{ post.context }}
-                </div>
-                <el-tag v-for="tag in tags" :key="tag.label" :type="tag.type" effect="dark" style="margin: 10px;">
-                    {{ tag.label }}
-                </el-tag>
-                <el-button @click="dialogFormVisible = true">+</el-button>
-                <el-dialog v-model="dialogFormVisible" title="发表评论">
-                    <el-form :model="form">
-                        <el-form-item label="内容">
-                            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" v-model="form.context"
-                                autocomplete="off" />
-                        </el-form-item>
-                    </el-form>
-                    <template #footer>
-                        <span class="dialog-footer">
-                            <el-button @click="dialogFormVisible = false" style="margin-right: 30px;">返回
-                            </el-button>
-                            <el-button type="primary" @click="send">发表</el-button>
-                        </span>
-                    </template>
-                </el-dialog>
+            <el-header style="flex:1">
+                <home-nav style="background-color: #1d3557;" />
             </el-header>
-            <el-main style="margin-top: 200px;margin-left: 200px;">
-                <div style="margin-top: 50px;" v-for="(k, i) in CurPage()" :key="i">
-                    <el-card class="box-card">
+            <el-main style="margin: 0px;padding: 0px;">
+                <el-card class="title-card animate__animated animate__pulse">
+                    <el-col>
+                        <p style="font-size: 25px;font-weight: 900;text-align: left;">{{ post.title }}</p>
+                        <div v-if="post.context.length >= 100 && !showContext">
+                            <el-button style="text-align:left" text @click="showContext = true">{{ post.context.slice(0,
+                                    100) + ' 显示全部'
+                            }}
+                            </el-button>
+                        </div>
+                        <div style="text-align:left;margin-left:70px;" v-if="!showContext" class="context">
+                            {{ post.context }}
+                        </div>
+                        <el-tag v-for="tag in tags" :key="tag.label" :type="tag.type" effect="dark"
+                            style="margin: 10px;">
+                            {{ tag.label }}
+                        </el-tag>
+                        <!-- 需要一个帖子所有者的编辑功能 -->
+                    </el-col>
+                </el-card>
+                <div style="margin-top: 50px;margin-left: 200px;" v-for="(v, i) in CurPage()" :key="i">
+                    <el-card class="box-card animate__animated animate__backInLeft">
                         <el-row :gutter="20">
                             <el-col :span="4">
                                 <el-popover :width="300"
                                     popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
                                     <template #reference>
-                                        <el-avatar :size="100"
-                                            src="https://avatars.githubusercontent.com/u/72015883?v=4" />
+                                        <el-avatar :size="100" :src="profiles[i]" />
                                     </template>
                                     <template #default>
                                         <div class="demo-rich-conent"
                                             style="display: flex; gap: 16px; flex-direction: column">
-                                            <el-avatar :size="60"
-                                                src="https://avatars.githubusercontent.com/u/72015883?v=4"
-                                                style="margin-bottom: 8px" />
+                                            <el-avatar :size="60" :src="profiles[i]" style="margin-bottom: 8px" />
                                             <div>
                                                 <p class="demo-rich-content__name" style="margin: 0; font-weight: 500">
                                                     Element Plus
@@ -67,11 +56,11 @@
                             </el-col>
                             <el-col :span="16">
                                 <el-row>
-                                    <div style="text-align: left;">{{ k.host }}</div>
+                                    <div style="text-align: left;">{{ v.host }}</div>
                                     <el-button type="danger" :icon="Delete" style="margin-left:400px;"
-                                        @click="del(k.level, k.timestamp)" circle />
+                                        @click="del(v.level, v.timestamp)" circle />
                                 </el-row>
-                                <div style="text-align: left;margin-top: 10px;">{{ k.context }}</div>
+                                <div style="text-align: left;margin-top: 10px;">{{ v.context }}</div>
                                 <div style="margin-top: 30px;">
                                     <el-collapse accordion>
                                         <el-collapse-item>
@@ -81,7 +70,7 @@
                                                 </el-icon>评论
                                             </template>
                                             <el-timeline>
-                                                <el-timeline-item v-for="(_k, _i) in k.sub" :key="_i"
+                                                <el-timeline-item v-for="(_k, _i) in v.sub" :key="_i"
                                                     :tiemstamp="_k.timestamp">
                                                     <div style="text-align: left;">{{ FormatTime(_k.timestamp) }}</div>
                                                     <el-row>
@@ -99,7 +88,7 @@
                                                             <el-row>
                                                                 <el-input v-model="reply_msg" />
                                                                 <el-button type="primary"
-                                                                    @click="reply(k.level, _k.from)">发送
+                                                                    @click="reply(v.level, _k.from)">发送
                                                                 </el-button>
                                                             </el-row>
                                                         </el-popover>
@@ -111,7 +100,7 @@
                                 </div>
                                 <el-row>
                                     <div class="time">
-                                        发布时间: {{ FormatTime(k.timestamp) }}
+                                        发布时间: {{ FormatTime(v.timestamp) }}
                                     </div>
                                     <el-popover placement="bottom" :width="400" trigger="click">
                                         <template #reference>
@@ -119,7 +108,7 @@
                                         </template>
                                         <el-row>
                                             <el-input v-model="reply_msg" />
-                                            <el-button type="primary" @click="reply(k.level, '')">发送</el-button>
+                                            <el-button type="primary" @click="reply(v.level, '')">发送</el-button>
                                         </el-row>
                                     </el-popover>
                                 </el-row>
@@ -127,12 +116,32 @@
                         </el-row>
                     </el-card>
                 </div>
-                <el-pagination style="margin-top: 30px;" background v-model:currentPage="currentPage"
-                    v-model:page-size="pageSize" :small="small" :disabled="disabled" :background="background"
-                    layout="prev, pager, next, jumper" :total="comments.length" @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange" />
+                <el-row style="margin-top: 30px;margin-left: 330px;">
+                    <el-pagination v-model:currentPage="currentPage" v-model:page-size="pageSize" :small="small"
+                        :disabled="disabled" background="true" layout="prev, pager, next, jumper"
+                        :total="comments.length" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange" />
+                    <el-button @click="dialogFormVisible = true" type="primary" style="margin-left: 30px;">发表评论
+                    </el-button>
+                </el-row>
+                <el-dialog v-model="dialogFormVisible" title="发表评论">
+                    <el-form :model="form">
+                        <el-form-item label="内容">
+                            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" v-model="form.context"
+                                autocomplete="off" />
+                        </el-form-item>
+                    </el-form>
+                    <template #footer>
+                        <span class="dialog-footer">
+                            <el-button @click="dialogFormVisible = false" style="margin-right: 30px;">返回
+                            </el-button>
+                            <el-button type="primary" @click="send">发表</el-button>
+                        </span>
+                    </template>
+                </el-dialog>
             </el-main>
-            <el-footer>Copyright By Ansurfen</el-footer>
+            <el-footer style="padding-top: 20px;background-color: #1d3557;color: whitesmoke;">©Copyright MyCommunity.org
+                2022-2023</el-footer>
         </el-container>
     </div>
 </template>
@@ -158,7 +167,6 @@ const showContext = ref(false)
 const currentPage = ref(1)
 const pageSize = ref(10)
 const small = ref(false)
-const background = ref(false)
 const disabled = ref(false)
 const dialogFormVisible = ref(false)
 
@@ -168,6 +176,7 @@ const form = reactive({
 
 let post = ref<Posts>({ id: '', title: '', timestamp: '', author: '', context: '', comments: '', tags: '' })
 let comments = ref<Comment[]>([])
+let profiles = ref<String[]>([])
 
 const syncComment = () => {
     if (route.params['id'].length > 0) {
@@ -177,6 +186,8 @@ const syncComment = () => {
             post.value = JSON.parse(res['data']['data'].data)
             let t: Tags = JSON.parse(post.value.tags)
             comments.value = []
+            profiles.value = []
+            tags.value = []
             t.forEach(v => tags.value.push({ type: RandEType(), label: v }))
             let tmpl: IComment[] = JSON.parse(post.value.comments)
             tmpl.forEach((v, i) => {
@@ -188,6 +199,7 @@ const syncComment = () => {
                     level: i
                 }
                 comments.value.push(t)
+                profiles.value.push("http://localhost:9090/images/" + t.host + ".png")
             })
         }).catch(err => console.log(err))
     }
@@ -263,10 +275,11 @@ const del = (level: number, time: string) => {
 // 后端的数据转成 remark的数组 通过curpage 拿到当前map渲染
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .el-header {
     --el-header-padding: 0 0px;
 }
+
 .box-card {
     width: 800px;
 }
@@ -288,5 +301,36 @@ const del = (level: number, time: string) => {
     position: absolute;
     left: 100px;
     width: 500px;
+}
+
+/deep/.el-dialog {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/deep/.el-card {
+    background-color: rgba(255, 255, 255, 0.72);
+}
+
+/deep/.el-collapse-item__header {
+    background-color: rgba(255, 255, 255, 0.20);
+}
+
+/deep/.el-timeline-item__wrapper {
+    background-color: rgba(255, 255, 255, 0.20);
+}
+
+.el-main {
+    background-image: url("../../assets/search-bg.png");
+    min-height: 750px;
+}
+
+.title-card {
+    margin-top: 30px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.box-card {
+    width: 700px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container">
+    <div class="card-container animate__animated animate__fadeInUp">
         <el-skeleton :rows="4" :loading="loading" style="text-align: left;width: 900px;padding-left: 300px;" animated>
             <template #template>
             </template>
@@ -8,30 +8,35 @@
                     <el-col>
                         <el-row>
                             <el-col :span="5">
-                                <el-skeleton-item v-if="community?.image === ''" variant="image"
-                                    style="width: 80px; height: 50px;" />
-                                <el-avatar v-else shape="square" :size="80" :fit="fit" :src="url" />
+                                <el-avatar shape="square" :size="60" :fit="fit" :src="url" />
                             </el-col>
                             <el-col :span="10">
-                                <div style="text-align: left;">{{ community?.name }}</div>
-                                <div style="text-align: left;">创始人: {{ community?.hostname }}</div>
+                                <div style="text-align: left;color: #1e1e1e;">{{ community?.name }}</div>
+                                <div style="text-align: left;color: #1e1e1e;">所有者: {{ community?.hostname }}</div>
                             </el-col>
                             <el-col :span="8">
-                                <span style="border-radius: 30px;color: #4e8e2f;">
-                                    <div>
+                                <div style="border-radius: 30px;background-color: #ebfffc;width: 220px;">
+                                    <p style="color:#2e7f74;">
                                         创建时间: {{ FormatTime(community?.timestamp as string) }}
-                                    </div>
-                                </span>
+                                    </p>
+                                </div>
                             </el-col>
                         </el-row>
-                        <el-row style="color: grey;height: 100px;">
+                        <el-row style="color: #1e1e1e;height: 100px;">
                             {{ community?.context }}
                         </el-row>
                         <el-row>
                             <el-col :span="19">
-                                <div v-for="(k, v) in community?.tags" :key="v">
-                                    {{ k }}
-                                </div>
+                                <el-row>
+                                    <div style="margin: 5px;" v-for="(v, i) in community?.tags" :key="i">
+                                        <el-tag v-if="i === 0" type="warning" effect="dark">{{ v }}</el-tag>
+                                        <el-tag v-else-if="i % 2 === 0" type="" effect="dark">{{ v }}</el-tag>
+                                        <el-tag v-else-if="i % 3 === 0" type="danger" effect="dark">{{ v }}</el-tag>
+                                        <el-tag v-else-if="i % 5 === 0" type="info" effect="dark">{{ v }}</el-tag>
+                                        <el-tag v-else type="success" effect="dark">{{ v }}</el-tag>
+                                    </div>
+                                </el-row>
+
                             </el-col>
                             <el-col :span="4">
                                 <el-button type="primary" @click="main(community)">查看详情</el-button>
@@ -49,7 +54,7 @@ import { PropType, reactive, ref, toRefs } from 'vue';
 import { Community } from '@/models/community'
 import { useRouter } from 'vue-router';
 import { FormatTime } from '@/utils/time'
-import { emit } from 'process';
+
 defineProps({
     community: Object as PropType<Community>,
     loading: {
@@ -66,7 +71,7 @@ const main = (community: Community | undefined) => {
 }
 const state = reactive({
     fit: 'fill',
-    url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+    url: 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
 })
 const { fit, url } = toRefs(state)
 </script>

@@ -83,8 +83,7 @@ import { reactive } from 'vue'
 const userStore = useUserStore()
 
 if (window.localStorage) {
-    let storage = window.localStorage
-    let jwt = storage.getItem('jwt')
+    let jwt = GetStore("jwt")
     if (typeof (jwt) === 'string' && jwt.length > 0) {
         userStore.login = true
         userStore.jwt = jwt

@@ -34,12 +34,8 @@ func AddPost(ctx *gin.Context) {
 	} else {
 		community = tmpl.(models.Community)
 	}
-	// var tags models.Tags
-	// json.Unmarshal([]byte(post.Tags), &tags)
 	if len(community.Posts) == 0 {
 		community.Posts = "[]"
-	} else {
-		community.Posts = "[" + community.Posts + "]"
 	}
 	var posts []models.Post
 	if err := json.Unmarshal([]byte(community.Posts), &posts); err != nil {

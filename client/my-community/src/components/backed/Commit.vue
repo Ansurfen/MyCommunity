@@ -71,7 +71,6 @@
                             <el-step title="通过" />
                         </el-steps>
                     </div>
-
                 </div>
             </el-tab-pane>
             <el-tab-pane label="已审核" name="third">Role</el-tab-pane>
@@ -131,6 +130,7 @@ const pass = (cname: string, username: string, type: number) => {
         second: username
     }), userStore.jwt).then(res => {
         console.log(res)
+        handleClick({ "index": '0' })
     }).catch(err => console.log(err))
 }
 const reject = (cname: string, username: string, type: number) => {
@@ -141,6 +141,7 @@ const reject = (cname: string, username: string, type: number) => {
         second: username
     }), userStore.jwt).then(res => {
         console.log(res)
+        handleClick({ "index": '0' })
     }).catch(err => console.log(err))
 }
 if (GetStoreWithBoolean("loadCommit")) {

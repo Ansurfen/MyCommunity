@@ -1,7 +1,7 @@
 <template>
     <div class="slice-container">
         <div v-if="communities.length <= 0">
-            <el-card class="null-card">
+            <el-card class="null-card animate__animated animate__tada">
                 <el-col>
                     <h1>空空如也</h1>
                     <h2>未能找到查询的社团，也可能未能及时刷新搜索栏（尝试使用Enter刷新），或者点击搜索栏的右侧新建社团吧</h2>

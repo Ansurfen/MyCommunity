@@ -4,10 +4,10 @@
       <el-header style="background-color: #1d3557;flex: 1;">
         <home-nav />
       </el-header>
-      <el-main class="bc">
+      <el-main class="bc" style="margin: 0px;padding: 0px;">
         <home-body />
       </el-main>
-      <el-footer class="footer">
+      <el-footer class="footer" style="margin: 0px;padding: 0px;background-color: #1d3557;color: whitesmoke;">
         <home-bottom />
       </el-footer>
     </el-container>

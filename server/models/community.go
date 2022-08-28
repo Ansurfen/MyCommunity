@@ -11,7 +11,7 @@ type Community struct {
 	Admins    string `json:"admins" gorm:"not null"`
 	Members   string `json:"memebers" gorm:"not null"`
 	Notes     string `json:"notes" gorm:"not null"`
-	Posts     string `json:"posts" gorm:"not null"`
+	Posts     string `json:"posts" gorm:"type: longtext;not null"`
 	Status    int8   `json:"status" gorm:"not null"`
 }
 
@@ -23,11 +23,11 @@ type Notification struct {
 type Post struct {
 	Id        string `json:"id"`
 	Title     string `json:"title"`
-	Author    string
-	Timestamp string
+	Author    string `json:"author"`
+	Timestamp string `json:"timestamp"`
 	Tags      string `json:"tags"`
 	Context   string `json:"context"`
-	Score     int8
+	Score     int8   `json:"score"`
 }
 
 type Tags []string

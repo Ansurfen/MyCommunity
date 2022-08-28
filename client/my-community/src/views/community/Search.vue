@@ -33,7 +33,7 @@
                                             class="ml-1 w-20" size="small" @keyup.enter="handleInputConfirm"
                                             @blur="handleInputConfirm" />
                                         <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
-                                            + New Tag
+                                            + 添加标签
                                         </el-button>
                                     </div>
                                     <span class="dialog-footer">
@@ -48,7 +48,7 @@
                 </el-row>
                 <slice :communities="communities" />
             </el-main>
-            <el-footer>Copyright By Ansurfen</el-footer>
+            <el-footer style="padding-top: 20px;background-color: #1d3557;color: whitesmoke;">©Copyright MyCommunity.org 2022-2023</el-footer>
         </el-container>
     </div>
 </template>
@@ -129,6 +129,9 @@ const search = () => {
     form.append("cname", input.value)
     searchCommunity(form).then(res => {
         communities.value = JSON.parse(res['data']['data'].data)
+        communities.value.forEach((e, i) => {
+            communities.value[i].tags = JSON.parse(e.tags.toString())
+        })
     }).catch(err => console.log(err))
 }
 

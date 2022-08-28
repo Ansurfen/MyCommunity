@@ -1,8 +1,11 @@
 <template>
   <div class="home-body">
-    <el-alert title="欢 迎  使  用 社 团 云 平 台" type="warning" center show-icon />
+    <el-alert
+      title="欢&nbsp;&nbsp;&nbsp;&nbsp;迎&nbsp;&nbsp;&nbsp;&nbsp;使&nbsp;&nbsp;&nbsp;&nbsp;用&nbsp;&nbsp;&nbsp;&nbsp;社&nbsp;&nbsp;&nbsp;&nbsp;团&nbsp;&nbsp;&nbsp;&nbsp;云&nbsp;&nbsp;&nbsp;&nbsp;平&nbsp;&nbsp;&nbsp;&nbsp;台"
+      type="warning" center show-icon />
     <img src="../../assets/home_body.png" />
-    <p class="home-body-detail">开放、多元、共享的社团云平台</p>
+    <p class="home-body-detail">开放、多元、共享的社团云平台
+    </p>
   </div>
 </template>
 

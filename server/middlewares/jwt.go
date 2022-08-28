@@ -44,3 +44,41 @@ func AuthJWT() gin.HandlerFunc {
 		ctx.Next()
 	}
 }
+
+func AuthJWTWithNull() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokenString := ctx.GetHeader("Authorization")
+		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
+			ctx.Set("has", false)
+			ctx.Next()
+			ctx.Abort()
+			return
+		}
+		tokenString = tokenString[7:]
+		token, claims, err := common.ParseToken(tokenString)
+		if err != nil || !token.Valid {
+			ctx.Set("has", false)
+			ctx.Next()
+			ctx.Abort()
+			return
+		}
+		db := sql.GetDB("general")
+		var user models.User
+		db.Query(&user, claims.UID)
+		if user.Id == 0 {
+			ctx.Set("has", false)
+			ctx.Next()
+			ctx.Abort()
+			return
+		}
+		if user.Telephone != "" {
+			user.Telephone = utils.DecodeAESWithKey(utils.BackedKey, user.Telephone)
+		}
+		if user.Email != "" {
+			user.Email = utils.DecodeAESWithKey(utils.BackedKey, user.Email)
+		}
+		ctx.Set("has", true)
+		ctx.Set("user", user)
+		ctx.Next()
+	}
+}

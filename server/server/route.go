@@ -28,7 +28,7 @@ func (s *SEngine) UseRouter() *SEngine {
 	communityRouter := s.Group("/community")
 	{
 		communityRouter.POST("/new", middlewares.AuthJWT(), community.New)
-		communityRouter.POST("/info", community.Info)
+		communityRouter.POST("/info", middlewares.AuthJWTWithNull(), community.Info)
 		communityRouter.POST("/add", middlewares.AuthJWT(), community.Add)
 		communityRouter.POST("/edit", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ADMIN), community.Edit)
 		communityRouter.POST("/del", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ROOT), community.Del)
