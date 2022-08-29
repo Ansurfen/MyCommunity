@@ -1,6 +1,6 @@
 import { userInfo } from "@/api/user"
 import { UserInfo } from "@/models/user"
-import { GetStore, SetStore } from "@/utils/store"
+import { GetStore, SetStore, SetStoreWithBoolean } from "@/utils/store"
 import { defineStore } from "pinia"
 
 export const useUserStore = defineStore("user", {
@@ -62,6 +62,22 @@ export const useUserStore = defineStore("user", {
         "right": right,
         "profile": userInfo.profile,
       }
+    },
+    forceSyncUserInfo() {
+      if (this) {
+        let jwt = GetStore("jwt")
+        if (typeof (jwt) === 'string' && jwt.length > 0) {
+            this.login = true
+            this.jwt = jwt
+        }
+        if (this.login && GetStore("edit").length > 0) {
+            this.syncInfoWithNet()
+            SetStoreWithBoolean("edit", false)
+        }
+        if (this.login && this.info.username === '') {
+            this.syncInfoWithCache()
+        }
+    }
     }
   },
 })

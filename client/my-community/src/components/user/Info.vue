@@ -106,7 +106,7 @@ const state = reactive({
     url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
 if (userStore.info.profile === '1') {
-    state.url = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+    state.url = 'http://localhost:9090/images/user/' + userStore.info.username + '.png'
 }
 const { fit, url } = toRefs(state)
 </script>

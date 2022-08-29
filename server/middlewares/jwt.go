@@ -5,6 +5,7 @@ import (
 	"MyCommunity/db/sql"
 	"MyCommunity/models"
 	"MyCommunity/utils"
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -14,7 +15,28 @@ import (
 func AuthJWT() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.GetHeader("Authorization")
-		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
+		if len(tokenString) == 0 {
+			common.CommonRes(ctx, http.StatusUnauthorized, nil, "权限不足")
+			ctx.Abort()
+			return
+		}
+		if strings.HasPrefix(tokenString, "{") {
+			tokenString = tokenString[1:]
+			str := "{"
+			i := 0
+			for i = 0; tokenString[i] != '}'; i++ {
+				str += string(tokenString[i])
+			}
+			str += "}"
+			var header models.AuthHeader
+			if err := json.Unmarshal([]byte(str), &header); err != nil {
+				common.CommonRes(ctx, http.StatusBadRequest, gin.H{"err": err.Error()}, "Fail to parser JSON")
+				return
+			}
+			ctx.Set("header", header)
+			tokenString = tokenString[i+1:]
+		}
+		if !strings.HasPrefix(tokenString, "Bearer ") {
 			common.CommonRes(ctx, http.StatusUnauthorized, nil, "权限不足")
 			ctx.Abort()
 			return

@@ -11,6 +11,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Edit(ctx *gin.Context) {
+	var data models.Posts
+	if err := ctx.ShouldBindJSON(&data); err != nil {
+		common.CommonRes(ctx, http.StatusBadRequest, gin.H{"err": err.Error()}, "Fail to parser JSON")
+		return
+	}
+	var user *models.User
+	if user = common.GetUser(ctx); user == nil {
+		return
+	}
+
+	if user.Username != data.Author {
+		common.FailRes(ctx, nil, "没有权限")
+		return
+	}
+	db := sql.GetDB("general")
+	db.Where("id = ?", data.Id).Model(&models.Posts{}).Update(gin.H{
+		"context": data.Context,
+		"tags":    data.Tags,
+	})
+	common.SuccessRes(ctx, nil, "修改成功")
+}
+
 /*
 	from -> post id
 	to ->

@@ -18,6 +18,7 @@ type Community struct {
 type Notification struct {
 	Title   string `json:"title"`
 	Context string `json:"context"`
+	Timestamp string `json:"timestamp"`
 }
 
 type Post struct {

@@ -27,3 +27,7 @@ export const appendComment = (data: string, jwt: string) => {
 export const delComment = (data: string, jwt: string) => {
     return service.request({ url: '/post/del', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
 }
+
+export const editPost = (data: string, jwt: string) => {
+    return service.request({ url: '/post/edit/post', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
+}

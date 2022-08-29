@@ -48,7 +48,8 @@
                 </el-row>
                 <slice :communities="communities" />
             </el-main>
-            <el-footer style="padding-top: 20px;background-color: #1d3557;color: whitesmoke;">©Copyright MyCommunity.org 2022-2023</el-footer>
+            <el-footer style="padding-top: 20px;background-color: #1d3557;color: whitesmoke;">©Copyright MyCommunity.org
+                2022-2023</el-footer>
         </el-container>
     </div>
 </template>
@@ -131,6 +132,11 @@ const search = () => {
         communities.value = JSON.parse(res['data']['data'].data)
         communities.value.forEach((e, i) => {
             communities.value[i].tags = JSON.parse(e.tags.toString())
+            if (e.image.length <= 0) {
+                communities.value[i].image = 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+            } else {
+                communities.value[i].image = 'http://localhost:9090/' + communities.value[i].image
+            }
         })
     }).catch(err => console.log(err))
 }

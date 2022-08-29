@@ -31,12 +31,15 @@ func (s *SEngine) UseRouter() *SEngine {
 		communityRouter.POST("/info", middlewares.AuthJWTWithNull(), community.Info)
 		communityRouter.POST("/add", middlewares.AuthJWT(), community.Add)
 		communityRouter.POST("/edit", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ADMIN), community.Edit)
+		communityRouter.POST("/edit/images", middlewares.AuthJWT(), community.Update)
 		communityRouter.POST("/del", middlewares.AuthJWT(), middlewares.CheckCommunityRight(models.ROOT), community.Del)
 		communityRouter.POST("/search", community.Search)
 		communityRouter.POST("/cancel", middlewares.AuthJWT(), middlewares.CheckCommunityMember(), community.Cancel)
 		communityRouter.POST("/post/add", middlewares.AuthJWT(), middlewares.CheckCommunityMember(), community.AddPost)
+		communityRouter.POST("/note/add", middlewares.AuthJWT(), middlewares.CheckCommunityMember(), community.AddNote)
 		// 必须拦截非社团的人看帖子
 		communityRouter.POST("/post/info", community.InfoPost)
+		communityRouter.POST("/note/info", community.InfoNote)
 	}
 
 	postRouter := s.Group("/post")
@@ -46,6 +49,7 @@ func (s *SEngine) UseRouter() *SEngine {
 		postRouter.POST("/append", middlewares.AuthJWT(), post.Reply)
 		postRouter.POST("/del", middlewares.AuthJWT(), post.DelComment)
 		postRouter.POST("/del/sub", middlewares.AuthJWT(), post.DelSubComment)
+		postRouter.POST("/edit/post", middlewares.AuthJWT(), post.Edit)
 		postRouter.POST("/edit/", middlewares.AuthJWT(), post.EditComment)
 		postRouter.POST("/edit/sub", middlewares.AuthJWT(), post.EditSubComment)
 	}
@@ -65,7 +69,8 @@ func (s *SEngine) UseRouter() *SEngine {
 	s.POST("/admin/del", middlewares.AuthRight(models.ROOT), admin.Del)
 	s.POST("/admin/find", middlewares.AuthRight(models.ROOT), admin.Find)
 
-	s.Static("/images", "./images")
+	s.Static("/images/user", "./images/user")
+	s.Static("/images/community", "./images/community")
 
 	return s
 }

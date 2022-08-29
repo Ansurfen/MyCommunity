@@ -24,3 +24,9 @@ export const RandEType = (): "" | "success" | "warning" | "info" | "danger" => {
     }
     return ""
 }
+
+export interface AuthHeader {
+    first: string
+    second: string
+    third: string
+}

@@ -67,7 +67,7 @@ if (userStore) {
   }
 }
 if (userStore.info.profile === '1') {
-  state.circleUrl = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+  state.circleUrl = 'http://localhost:9090/images/user/' + userStore.info.username + '.png'
 }
 const { circleUrl } = toRefs(state)
 let msg = ''

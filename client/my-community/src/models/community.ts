@@ -30,3 +30,9 @@ export interface Post {
     context: string,
     score: number
 }
+
+export interface Note {
+    title: string,
+    context: string,
+    timestamp: string
+}

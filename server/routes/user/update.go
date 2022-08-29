@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const savePath string = "./images/"
+const savePath string = "./images/user/"
 
 func Update(ctx *gin.Context) {
 	var user *models.User

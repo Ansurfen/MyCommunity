@@ -8,7 +8,7 @@
                     <el-col>
                         <el-row>
                             <el-col :span="5">
-                                <el-avatar shape="square" :size="60" :fit="fit" :src="url" />
+                                <el-avatar shape="square" :size="60" :fit="fit" :src="community?.image" />
                             </el-col>
                             <el-col :span="10">
                                 <div style="text-align: left;color: #1e1e1e;">{{ community?.name }}</div>

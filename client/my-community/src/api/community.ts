@@ -15,3 +15,15 @@ export const infoCommunity = (data: FormData, jwt: string) => {
 export const addCommunity = (data: string, jwt: string) => {
     return service.request({ url: '/community/add', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
 }
+
+export const editCommunity = (data: string, jwt: string) => {
+    return service.request({ url: '/community/edit', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
+}
+
+export const addNote = (data: string, jwt: string) => {
+    return service.request({ url: '/community/note/add', method: 'post', data, headers: { 'Authorization': "Bearer " + jwt } })
+}
+
+export const infoNote = (data: FormData) => {
+    return service.request({ url: '/community/note/info', method: 'post', data })
+}

@@ -12,6 +12,7 @@ import (
 
 func CheckCommunityRight(right int) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// @Requried id (community)
 		var post models.Post
 		if err := ctx.ShouldBindJSON(&post); err != nil {
 			common.CommonRes(ctx, http.StatusBadRequest, gin.H{"err": err.Error()}, "Fail to parser JSON")
@@ -69,6 +70,7 @@ func CheckCommunityRight(right int) gin.HandlerFunc {
 
 func CheckCommunityMember() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// @Required id (community)
 		var post models.Post
 		if err := ctx.ShouldBindJSON(&post); err != nil {
 			common.CommonRes(ctx, http.StatusBadRequest, gin.H{"err": err.Error()}, "Fail to parser JSON")

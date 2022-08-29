@@ -21,7 +21,8 @@
                             style="margin: 10px;">
                             {{ tag.label }}
                         </el-tag>
-                        <!-- 需要一个帖子所有者的编辑功能 -->
+                        <el-button v-if="userStore.info['username'] === post.author" type="primary" @click="editStart">
+                            编辑</el-button>
                     </el-col>
                 </el-card>
                 <div style="margin-top: 50px;margin-left: 200px;" v-for="(v, i) in CurPage()" :key="i">
@@ -139,6 +140,33 @@
                         </span>
                     </template>
                 </el-dialog>
+                <el-dialog v-model="dialogEditVisible" title="编辑帖子">
+                    <el-form :model="editForm">
+                        <el-col>
+                            <el-form-item label="内容" style="margin-top: 20px;">
+                                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8 }"
+                                    v-model="editForm.context" placeholder="输入不少于20字的简介" autocomplete="off" />
+                            </el-form-item>
+                        </el-col>
+                    </el-form>
+                    <template #footer>
+                        <span class="dialog-footer">
+                            <div style="float: left;">
+                                <el-tag v-for="tag in dynamicEditTags" :key="tag" class="mx-1" closable
+                                    :disable-transitions="false" @close="handleEditClose(tag)">
+                                    {{ tag }}
+                                </el-tag>
+                                <el-input v-if="inputEditVisible" ref="InputEditRef" v-model="inputEditValue"
+                                    class="ml-1 w-20" size="small" @keyup.enter="handleInputEditConfirm"
+                                    @blur="handleInputEditConfirm" />
+                                <el-button v-else class="button-new-tag ml-1" size="small" @click="showInputEdit">
+                                    + 添加标签
+                                </el-button>
+                            </div>
+                            <el-button type="primary" @click="edit()">提交更改</el-button>
+                        </span>
+                    </template>
+                </el-dialog>
             </el-main>
             <el-footer style="padding-top: 20px;background-color: #1d3557;color: whitesmoke;">©Copyright MyCommunity.org
                 2022-2023</el-footer>
@@ -152,12 +180,13 @@ import { Posts, IComment, Comment } from '@/models/posts'
 import { InfoFilled } from '@element-plus/icons-vue'
 import { Tag, Tags, RandEType } from '@/models/common'
 import { useRoute } from 'vue-router'
-import { infoPosts, addComment, appendComment, delComment } from '@/api/post'
+import { infoPosts, addComment, appendComment, delComment, editPost } from '@/api/post'
 import { useUserStore } from '@/stores/user'
 import HomeNav from '@/components/home/HomeNav.vue'
 import { Delete } from '@element-plus/icons-vue'
-import { ElNotification } from 'element-plus'
+import { ElInput, ElNotification } from 'element-plus'
 import { FormatTime } from '@/utils/time'
+import { nextTick } from 'vue'
 
 const route = useRoute()
 const userStore = useUserStore()
@@ -169,6 +198,14 @@ const pageSize = ref(10)
 const small = ref(false)
 const disabled = ref(false)
 const dialogFormVisible = ref(false)
+const editForm = reactive({
+    context: ''
+})
+const dialogEditVisible = ref(false)
+const inputEditValue = ref('')
+const dynamicEditTags = ref<string[]>([])
+const inputEditVisible = ref(false)
+const InputEditRef = ref<InstanceType<typeof ElInput>>()
 
 const form = reactive({
     context: '',
@@ -177,6 +214,8 @@ const form = reactive({
 let post = ref<Posts>({ id: '', title: '', timestamp: '', author: '', context: '', comments: '', tags: '' })
 let comments = ref<Comment[]>([])
 let profiles = ref<String[]>([])
+
+// userStore.forceSyncUserInfo()
 
 const syncComment = () => {
     if (route.params['id'].length > 0) {
@@ -199,8 +238,9 @@ const syncComment = () => {
                     level: i
                 }
                 comments.value.push(t)
-                profiles.value.push("http://localhost:9090/images/" + t.host + ".png")
+                profiles.value.push("http://localhost:9090/images/user/" + t.host + ".png")
             })
+
         }).catch(err => console.log(err))
     }
 }
@@ -271,8 +311,45 @@ const del = (level: number, time: string) => {
         console.log(comments.value)
     }).catch(err => console.log(err))
 }
+const handleEditClose = (tag: string) => {
+    dynamicEditTags.value.splice(dynamicEditTags.value.indexOf(tag), 1)
+}
 
-// 后端的数据转成 remark的数组 通过curpage 拿到当前map渲染
+const showInputEdit = () => {
+    inputEditVisible.value = true
+    nextTick(() => {
+        InputEditRef.value!.input!.focus()
+    })
+}
+
+const handleInputEditConfirm = () => {
+    if (inputEditValue.value) {
+        dynamicEditTags.value.push(inputEditValue.value)
+    }
+    inputEditVisible.value = false
+    inputEditValue.value = ''
+}
+
+const editStart = () => {
+    dialogEditVisible.value = true
+    dynamicEditTags.value = []
+    editForm.context = post.value.context
+    tags.value.forEach(v => {
+        dynamicEditTags.value.push(v.label)
+    })
+}
+
+const edit = () => {
+    editPost(JSON.stringify({
+        id: post.value.id,
+        context: editForm.context,
+        tags: JSON.stringify(dynamicEditTags.value),
+        author: userStore.info.username
+    }), userStore.jwt).then(res => {
+
+    }).catch(err => console.log(err))
+    dialogEditVisible.value = false
+}
 </script>
 
 <style lang="less" scoped>
