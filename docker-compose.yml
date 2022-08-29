@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - /home/ubuntu/nginx/html:/usr/share/nginx/html
+      - /home/ubuntu/nginx/nginx.conf:/etc/nginx/nginx.conf
+    privileged: true
+  mysql:
+    image: mysql:8.0.30
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  redis:
+      image: redis:latest
+  go-server:
+    image: go-server:latest
+    build: .
+    ports:
+      - 9090
