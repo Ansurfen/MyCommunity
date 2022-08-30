@@ -7,19 +7,18 @@ logger:
 datasource:
  driver: mysql
 # if use docker
-#  host: mysql
- host: localhost
+ host: mysql
+#  host: localhost
  port: 3306
  username: root
  password: root
  charset: utf8
  database:
  - general
- - test1
 redis:
 # if use docker
-#  host: redis
- host: localhost
+ host: redis
+#  host: localhost
  port: 6379
  password: 
 cache:

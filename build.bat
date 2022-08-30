@@ -9,4 +9,4 @@ cd ..
 
 cd ./server/
 
-go build main.go
+./build-server.bat
