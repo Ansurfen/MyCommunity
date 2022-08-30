@@ -22,9 +22,11 @@ import { infoCommunity } from '@/api/community'
 import { ref } from "vue"
 import { useUserStore } from "@/stores/user"
 import { GetStore, SetStoreWithBoolean } from "@/utils/store"
+import { useConfStore } from "@/stores/conf";
 
 const route = useRoute()
 const userStore = useUserStore()
+const confStore = useConfStore()
 const name = route.params['name'] as string
 let community = ref<Community>()
 let status = ref(0)
@@ -51,7 +53,7 @@ if (name.length > 0) {
         if (community.value!.image.length <= 0) {
             community.value!.image = "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
         } else {
-            community.value!.image = 'http://localhost:9090/' + community.value!.image
+            community.value!.image = confStore.server + community.value!.image
         }
         status.value = res['data']['data']['status']
     }).catch(err => console.log(err))

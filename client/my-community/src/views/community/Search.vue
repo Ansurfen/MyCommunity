@@ -27,7 +27,7 @@
                                     <div style="float: left;">
                                         <el-tag v-for="tag in dynamicTags" :key="tag" class="mx-1" closable
                                             :disable-transitions="false" @close="handleClose(tag)">
-                                            {{ tag }}
+                                            {{  tag  }}
                                         </el-tag>
                                         <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue"
                                             class="ml-1 w-20" size="small" @keyup.enter="handleInputConfirm"
@@ -66,7 +66,9 @@ import HomeNav from '@/components/home/HomeNav.vue'
 import { Search } from '@element-plus/icons-vue'
 import { Community } from '@/models/community'
 import { GetStoreWithBoolean, SetStoreWithBoolean } from '@/utils/store'
+import { useConfStore } from '@/stores/conf'
 
+const confStore = useConfStore()
 const inputValue = ref('')
 const dynamicTags = ref<string[]>([])
 const inputVisible = ref(false)
@@ -135,7 +137,7 @@ const search = () => {
             if (e.image.length <= 0) {
                 communities.value[i].image = 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
             } else {
-                communities.value[i].image = 'http://localhost:9090/' + communities.value[i].image
+                communities.value[i].image = confStore.server + communities.value[i].image
             }
         })
     }).catch(err => console.log(err))

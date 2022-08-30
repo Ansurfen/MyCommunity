@@ -46,7 +46,9 @@ import { useRouter } from "vue-router"
 import SearchNav from "../search/SearchNav.vue"
 import { reactive, toRefs } from 'vue'
 import { GetStore, SetStoreWithBoolean } from "@/utils/store"
+import { useConfStore } from "@/stores/conf"
 
+const confStore = useConfStore()
 const state = reactive({
   circleUrl:
     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
@@ -67,7 +69,7 @@ if (userStore) {
   }
 }
 if (userStore.info.profile === '1') {
-  state.circleUrl = 'http://localhost:9090/images/user/' + userStore.info.username + '.png'
+  state.circleUrl = confStore.server + 'images/user/' + userStore.info.username + '.png'
 }
 const { circleUrl } = toRefs(state)
 let msg = ''

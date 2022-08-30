@@ -5,7 +5,7 @@
                 <el-avatar style="margin-top: 50px;" shape="square" :size="100" :fit="state.fit" :src="state.url" />
             </el-col>
             <el-col :span="6" :offset="6" style="margin-top: 30px;">
-                <el-upload ref="uploadRef" action="http://localhost:9090/user/image/update" :headers="head"
+                <el-upload ref="uploadRef" :action="confStore.server + 'user/image/update'" :headers="head"
                     accept="image/png,image/jpg,image/jpeg" class="upload-demo" list-type="picture-card"
                     :auto-upload="false" multiple :before-upload="handler" :on-preview="handlePreview"
                     :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1" :on-exceed="handleExceed">
@@ -110,13 +110,14 @@ import { Plus } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { userEdit } from '@/api/user'
 
+const confStore = useConfStore()
 const state = reactive({
     fit: 'fill',
     url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
 const userStore = useUserStore()
 if (userStore.info.profile === '1') {
-    state.url = 'http://localhost:9090/images/' + userStore.info.username + '.png'
+    state.url = confStore.server + 'images/user/' + userStore.info.username + '.png'
 }
 const head = new Headers()
 head.append('Authorization', "Bearer " + userStore.jwt)

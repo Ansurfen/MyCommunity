@@ -7,19 +7,20 @@
             <el-main style="margin: 0px;padding: 0px;">
                 <el-card class="title-card animate__animated animate__pulse">
                     <el-col>
-                        <p style="font-size: 25px;font-weight: 900;text-align: left;">{{ post.title }}</p>
+                        <p style="font-size: 25px;font-weight: 900;text-align: left;">{{  post.title  }}</p>
                         <div v-if="post.context.length >= 100 && !showContext">
-                            <el-button style="text-align:left" text @click="showContext = true">{{ post.context.slice(0,
-                                    100) + ' 显示全部'
-                            }}
+                            <el-button style="text-align:left" text @click="showContext = true">{{  post.context.slice(0,
+                            100) + ' 显示全部'
+
+                                }}
                             </el-button>
                         </div>
                         <div style="text-align:left;margin-left:70px;" v-if="!showContext" class="context">
-                            {{ post.context }}
+                            {{  post.context  }}
                         </div>
                         <el-tag v-for="tag in tags" :key="tag.label" :type="tag.type" effect="dark"
                             style="margin: 10px;">
-                            {{ tag.label }}
+                            {{  tag.label  }}
                         </el-tag>
                         <el-button v-if="userStore.info['username'] === post.author" type="primary" @click="editStart">
                             编辑</el-button>
@@ -57,11 +58,11 @@
                             </el-col>
                             <el-col :span="16">
                                 <el-row>
-                                    <div style="text-align: left;">{{ v.host }}</div>
+                                    <div style="text-align: left;">{{  v.host  }}</div>
                                     <el-button type="danger" :icon="Delete" style="margin-left:400px;"
                                         @click="del(v.level, v.timestamp)" circle />
                                 </el-row>
-                                <div style="text-align: left;margin-top: 10px;">{{ v.context }}</div>
+                                <div style="text-align: left;margin-top: 10px;">{{  v.context  }}</div>
                                 <div style="margin-top: 30px;">
                                     <el-collapse accordion>
                                         <el-collapse-item>
@@ -73,13 +74,13 @@
                                             <el-timeline>
                                                 <el-timeline-item v-for="(_k, _i) in v.sub" :key="_i"
                                                     :tiemstamp="_k.timestamp">
-                                                    <div style="text-align: left;">{{ FormatTime(_k.timestamp) }}</div>
+                                                    <div style="text-align: left;">{{  FormatTime(_k.timestamp)  }}</div>
                                                     <el-row>
                                                         <div v-if="_k.to === ''">
-                                                            {{ _k.from }} : {{ _k.context }}
+                                                            {{  _k.from  }} : {{  _k.context  }}
                                                         </div>
                                                         <div v-else>
-                                                            {{ _k.from }} 回复 {{ _k.to }} : {{ _k.context }}
+                                                            {{  _k.from  }} 回复 {{  _k.to  }} : {{  _k.context  }}
                                                         </div>
                                                         <el-popover placement="bottom" :width="400" trigger="click">
                                                             <template #reference>
@@ -101,7 +102,7 @@
                                 </div>
                                 <el-row>
                                     <div class="time">
-                                        发布时间: {{ FormatTime(v.timestamp) }}
+                                        发布时间: {{  FormatTime(v.timestamp)  }}
                                     </div>
                                     <el-popover placement="bottom" :width="400" trigger="click">
                                         <template #reference>
@@ -154,7 +155,7 @@
                             <div style="float: left;">
                                 <el-tag v-for="tag in dynamicEditTags" :key="tag" class="mx-1" closable
                                     :disable-transitions="false" @close="handleEditClose(tag)">
-                                    {{ tag }}
+                                    {{  tag  }}
                                 </el-tag>
                                 <el-input v-if="inputEditVisible" ref="InputEditRef" v-model="inputEditValue"
                                     class="ml-1 w-20" size="small" @keyup.enter="handleInputEditConfirm"
@@ -187,7 +188,9 @@ import { Delete } from '@element-plus/icons-vue'
 import { ElInput, ElNotification } from 'element-plus'
 import { FormatTime } from '@/utils/time'
 import { nextTick } from 'vue'
+import { useConfStore } from '@/stores/conf'
 
+const confStore = useConfStore()
 const route = useRoute()
 const userStore = useUserStore()
 const tags = ref<Array<Tag>>([])
@@ -238,7 +241,7 @@ const syncComment = () => {
                     level: i
                 }
                 comments.value.push(t)
-                profiles.value.push("http://localhost:9090/images/user/" + t.host + ".png")
+                profiles.value.push(confStore.server + "images/user/" + t.host + ".png")
             })
 
         }).catch(err => console.log(err))

@@ -11,9 +11,9 @@
                                 </el-avatar>
                             </el-col>
                             <el-col :span="4">
-                                <p style="text-align: left;color: #1e1e1e;font-size: medium;">{{ community.name }}</p>
-                                <p style="text-align: left;color: #1e1e1e;font-size: small;">所有者: {{ community.hostname
-                                }}
+                                <p style="text-align: left;color: #1e1e1e;font-size: medium;">{{  community.name  }}</p>
+                                <p style="text-align: left;color: #1e1e1e;font-size: small;">所有者: {{  community.hostname 
+                                    }}
                                 </p>
                             </el-col>
                             <el-col :span="8" style="margin-left: 400px;">
@@ -27,8 +27,8 @@
                             </el-col>
                         </el-row>
                         <p style="text-align: left;color: #1e1e1e;font-size: medium;">{{
-                                community.context
-                        }}</p>
+                             community.context 
+                            }}</p>
                     </el-col>
                 </el-card>
                 <el-dialog v-model="dialogFormVisible" title="发布帖子">
@@ -46,7 +46,7 @@
                             <div style="float: left;">
                                 <el-tag v-for="tag in dynamicTags" :key="tag" class="mx-1" closable
                                     :disable-transitions="false" @close="handleClose(tag)">
-                                    {{ tag }}
+                                    {{  tag  }}
                                 </el-tag>
                                 <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1 w-20"
                                     size="small" @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
@@ -62,7 +62,7 @@
                 <el-dialog v-model="dialogEditVisible" title="编辑社团">
                     <el-form :model="editForm">
                         <el-col>
-                            <el-upload ref="uploadRef" action="http://localhost:9090/community/edit/images"
+                            <el-upload ref="uploadRef" :action="confStore.server + 'community/edit/images'"
                                 :headers="head" accept="image/png,image/jpg,image/jpeg" class="upload-demo"
                                 list-type="picture-card" :auto-upload="false" multiple :on-preview="handlePreview"
                                 :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1"
@@ -85,7 +85,7 @@
                             <div style="float: left;">
                                 <el-tag v-for="tag in dynamicEditTags" :key="tag" class="mx-1" closable
                                     :disable-transitions="false" @close="handleEditClose(tag)">
-                                    {{ tag }}
+                                    {{  tag  }}
                                 </el-tag>
                                 <el-input v-if="inputEditVisible" ref="InputEditRef" v-model="inputEditValue"
                                     class="ml-1 w-20" size="small" @keyup.enter="handleInputEditConfirm"
@@ -149,6 +149,7 @@ import { useRoute } from 'vue-router'
 import { infoPost } from '@/api/post'
 import { addCommunity, addNote, editCommunity, infoCommunity, infoNote } from '@/api/community'
 import { Flags } from '@/models/constant'
+import { useConfStore } from '@/stores/conf'
 
 defineProps({
     community: {
@@ -165,6 +166,7 @@ defineProps({
     }
 })
 
+const confStore = useConfStore()
 const errorHandler = true
 const dialogFormVisible = ref(false)
 const dialogEditVisible = ref(false)

@@ -4,6 +4,8 @@ let env = 'dev';
 let baseURL;
 if (env === 'dev') {
     baseURL = 'http://localhost:9090'
+} else { // example: env = run
+    baseURL = 'http://localhost:9090'
 }
 
 const service = axios.create({

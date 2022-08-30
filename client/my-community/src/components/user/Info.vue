@@ -16,14 +16,14 @@
                 <el-row>
                     <el-tag size="large">用户ID</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['id'] }}
+                    {{  userStore.info['id']  }}
                 </el-row>
             </el-col>
             <el-col :span="6" :offset="6">
                 <el-row>
                     <el-tag size="large">用户组</el-tag>
                     <div style="margin: 10px;" />
-                    <div>{{ userStore.info['right'] }}</div>
+                    <div>{{  userStore.info['right']  }}</div>
                 </el-row>
             </el-col>
         </el-row>
@@ -33,14 +33,14 @@
                 <el-row>
                     <el-tag size="large">用户名</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['username'] }}
+                    {{  userStore.info['username']  }}
                 </el-row>
             </el-col>
             <el-col :span="6" :offset="6">
                 <el-row>
                     <el-tag size="large">昵称</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['alias'] }}
+                    {{  userStore.info['alias']  }}
                 </el-row>
             </el-col>
         </el-row>
@@ -50,14 +50,14 @@
                 <el-row>
                     <el-tag size="large">手机号</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['telephone'] }}
+                    {{  userStore.info['telephone']  }}
                 </el-row>
             </el-col>
             <el-col :span="6" :offset="6">
                 <el-row>
                     <el-tag size="large">邮箱</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['email'] }}
+                    {{  userStore.info['email']  }}
                 </el-row>
             </el-col>
         </el-row>
@@ -67,7 +67,7 @@
                 <el-row>
                     <el-tag size="large">学校</el-tag>
                     <div style="margin: 10px;" />
-                    {{ userStore.info['school'] }}
+                    {{  userStore.info['school']  }}
                 </el-row>
             </el-col>
         </el-row>
@@ -101,12 +101,13 @@ const edit = () => {
     useConfStore().edit = true
 }
 
+const confStore = useConfStore()
 const state = reactive({
     fit: 'fill',
     url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
 if (userStore.info.profile === '1') {
-    state.url = 'http://localhost:9090/images/user/' + userStore.info.username + '.png'
+    state.url = confStore.server + 'images/user/' + userStore.info.username + '.png'
 }
 const { fit, url } = toRefs(state)
 </script>
